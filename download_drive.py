@@ -9,7 +9,7 @@ from googleapiclient.http import MediaIoBaseDownload
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
 # Filter target akun yang ingin didownload saja
-TARGET_AKUN = ['akun-34', 'akun-35', 'akun-36']
+TARGET_AKUN = ['akun-37', 'akun-38', 'akun-39', 'akun-40', 'akun-41', 'akun-42']
 
 def main():
     sa_key_info = os.environ.get('GCP_SA_KEY')
@@ -40,7 +40,6 @@ def main():
         f_id = file['id']
         f_name = file['name']
         
-        # Cek apakah nama file zip mengandung salah satu target (akun-4, akun-5, atau akun-6)
         if any(target in f_name for target in TARGET_AKUN):
             print(f"--> Mengunduh target: {f_name} (ID: {f_id})...")
             
