@@ -1,10 +1,5 @@
 name: "sf1m"
 
-# Mencegah 2 workflow jalan bersamaan untuk target akun yang sama
-concurrency:
-  group: ${{ github.workflow }}-${{ matrix.target }}
-  cancel-in-progress: true
-
 on:
   workflow_dispatch:
   schedule:
@@ -14,6 +9,12 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     timeout-minutes: 330
+
+    # CONCURRENCY DITARUH DI SINI AGAR BISA BACA MATRIX TARGET
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.target }}
+      cancel-in-progress: true
+
     strategy:
       fail-fast: false
       matrix:
