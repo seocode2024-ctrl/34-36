@@ -8,8 +8,12 @@ from googleapiclient.http import MediaIoBaseDownload
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
-# Filter target akun yang ingin didownload saja
-TARGET_AKUN = ['37', '38', '39', '40', '41', '42']
+target_env = os.environ.get('TARGET_ACCOUNT')
+
+if target_env:
+    TARGET_SM = [f"{target_env}.zip"]
+else:
+    TARGET_SM = ['21.zip', '22.zip', '23.zip', '24.zip', '25.zip', '26.zip', '27.zip', '28.zip', '29.zip', '30.zip']
 
 def main():
     sa_key_info = os.environ.get('GCP_SA_KEY')
@@ -20,7 +24,6 @@ def main():
     creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
 
-    print("Mencari file zip target di Google Drive...")
     query = "name contains '.zip' and trashed = false"
     
     results = service.files().list(
@@ -39,8 +42,8 @@ def main():
     for file in files:
         f_id = file['id']
         f_name = file['name']
-        
-        if any(target in f_name for target in TARGET_AKUN):
+                
+        if f_name in TARGET_SM:
             print(f"--> Mengunduh target: {f_name} (ID: {f_id})...")
             
             request = service.files().get_media(fileId=f_id)
